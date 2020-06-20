@@ -4,5 +4,9 @@
   "description": "Is a backend service to display movies data.",
   "main": "indes.js",
   "author": "Muhanned Noman <Muhanned.Noman@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
+  }
 }
