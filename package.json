@@ -1,0 +1,8 @@
+{
+  "name": "rateit",
+  "version": "1.0.0",
+  "description": "Is a backend service to display movies data.",
+  "main": "indes.js",
+  "author": "Muhanned Noman <Muhanned.Noman@gmail.com>",
+  "license": "MIT"
+}
