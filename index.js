@@ -39,6 +39,30 @@ app.get('/api/genres/:id', (req, res) => {
   res.send(genre);
 });
 
+// Add a new genres
+app.post('/api/genres', (req, res) => {
+  const { error } = validateGenre(req.body);
+
+  // 400 bad request
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const genre = {
+    id: genres.length + 1,
+    name: req.body.name,
+  };
+
+  genres.push(genre);
+
+  res.send(genre);
+});
+
+function validateGenre(genre) {
+  const schema = {
+    name: Joi.string().min(3).required(),
+  };
+  return Joi.validate(genre, schema);
+}
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is listening in port ${PORT}`);
