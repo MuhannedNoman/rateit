@@ -56,6 +56,18 @@ app.post('/api/genres', (req, res) => {
   res.send(genre);
 });
 
+// Delete genre
+app.delete('/api/genres/:id', (req, res) => {
+  const genre = genres.find((genre) => genre.id === parseInt(req.params.id));
+  if (!genre)
+    return res.status(404).send('The genre with the given id was not found');
+
+  const index = genres.indexOf(genre);
+  genres.splice(index, 1);
+
+  res.send(genre);
+});
+
 function validateGenre(genre) {
   const schema = {
     name: Joi.string().min(3).required(),
