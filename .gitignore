@@ -1,2 +1,4 @@
 # Ignoring module
 node_modules/
+
+env.js
