@@ -1,5 +1,4 @@
 const express = require('express');
-const Joi = require('joi');
 const mongoose = require('mongoose');
 const genres = require('./routes/genres');
 
@@ -9,16 +8,17 @@ mongoose
   .connect(env.DB_CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then(() => console.log('Connected to DB...'))
   .catch((err) => console.log('Couldnot connect to MongoDB', err));
 
 const app = express();
 
-app.use('/api/genres', genres);
-
 // Allow JSON parsing.
 app.use(express.json());
+
+app.use('/api/genres', genres);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
