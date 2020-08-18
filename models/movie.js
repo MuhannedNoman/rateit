@@ -23,7 +23,7 @@ function validateMovie(movie) {
     name: Joi.string().min(3).required(),
     numberInStock: Joi.number().required().min(0),
     dailyRenalRate: Joi.number().min(0).required(),
-    genreId: Joi.string().required(),
+    genreId: Joi.objectId().required(),
   };
   return Joi.validate(movie, schema);
 }
