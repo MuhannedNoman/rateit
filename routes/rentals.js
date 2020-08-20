@@ -4,7 +4,7 @@ const { Customer } = require('../models/customer');
 const express = require('express');
 const router = express.Router();
 const Fawn = require('fawn');
-const { Mongoose } = require('mongoose');
+const Mongoose = require('mongoose');
 
 Fawn.init(Mongoose);
 
