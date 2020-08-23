@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const Joi = require('joi');
+const env = require('../env');
+const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 
@@ -16,8 +18,10 @@ router.post('/', async (req, res) => {
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send('Invalid email or password.');
 
+  const token = jwt.sign({ _id: user._id }, env.JWT_SECRET_KEY);
+
   try {
-    res.send(true);
+    res.send(token);
   } catch (ex) {
     for (field in ex.errors) console.log(ex.errors[field].message);
   }
