@@ -3,6 +3,7 @@ const { Genre } = require('../models/genre');
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 // Handle displaying all movies
 router.get('/', async (req, res) => {
@@ -49,7 +50,7 @@ router.post('/', auth, async (req, res) => {
 });
 
 // Delete movie
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
   const movie = await Movie.findByIdAndRemove(req.params.id);
 
   if (!movie)

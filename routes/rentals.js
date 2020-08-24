@@ -6,6 +6,7 @@ const router = express.Router();
 const Fawn = require('fawn');
 const Mongoose = require('mongoose');
 const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 Fawn.init(Mongoose);
 
@@ -76,7 +77,7 @@ router.post('/', auth, async (req, res) => {
 });
 
 // Delete rental
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
   const rental = await Rental.findByIdAndRemove(req.params.id);
 
   if (!rental)
