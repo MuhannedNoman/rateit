@@ -15,12 +15,27 @@ Joi.objectId = require('joi-objectid')(Joi);
 
 const env = require('./env');
 
-process.on('uncaughtException', (ex) => {
-  console.error('We got an uncaught exception');
+process.on('unhandledRejection', (ex) => {
   winston.error(ex.message, ex);
+  process.exit(1);
 });
 
 winston.add(new winston.transports.File({ filename: `logfile.log` }));
+
+winston.add(
+  new winston.transports.File({
+    filename: `uncaughtExceptions.log`,
+    handleExceptions: true,
+  })
+);
+
+winston.add(
+  new winston.transports.File({
+    filename: `unhandledRejection.log`,
+    handleRejections: true,
+  })
+);
+
 winston.add(
   new winston.transports.MongoDB({
     db: env.DB_CONNECTION_STRING,
