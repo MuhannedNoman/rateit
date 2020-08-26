@@ -1,3 +1,4 @@
+require('express-async-errors');
 const express = require('express');
 const mongoose = require('mongoose');
 const genres = require('./routes/genres');

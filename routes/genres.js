@@ -6,12 +6,8 @@ const admin = require('../middleware/admin');
 
 // Handle displaying all genres
 router.get('/', async (req, res, next) => {
-  try {
-    const geners = await Genre.find().sort({ name: 1 }).select({ name: 1 });
-    res.send(geners);
-  } catch (error) {
-    next(error);
-  }
+  const geners = await Genre.find().sort({ name: 1 }).select({ name: 1 });
+  res.send(geners);
 });
 
 // Handle a route to display a genre by ID
@@ -35,12 +31,8 @@ router.post('/', auth, async (req, res) => {
     name: req.body.name,
   });
 
-  try {
-    await genre.save();
-    res.send(genre);
-  } catch (ex) {
-    for (field in ex.errors) console.log(ex.errors[field].message);
-  }
+  await genre.save();
+  res.send(genre);
 });
 
 // Delete genre

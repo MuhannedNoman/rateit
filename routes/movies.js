@@ -41,12 +41,8 @@ router.post('/', auth, async (req, res) => {
     dailyRenalRate: req.body.dailyRenalRate,
   });
 
-  try {
-    await movie.save();
-    res.send(movie);
-  } catch (ex) {
-    for (field in ex.errors) console.log(ex.errors[field].message);
-  }
+  await movie.save();
+  res.send(movie);
 });
 
 // Delete movie

@@ -35,12 +35,8 @@ router.post('/', auth, async (req, res) => {
     phone: req.body.phone,
   });
 
-  try {
-    customer = await customer.save();
-    res.send(customer);
-  } catch (ex) {
-    for (field in ex.errors) console.log(ex.errors[field].message);
-  }
+  customer = await customer.save();
+  res.send(customer);
 });
 
 // Delete a customer
