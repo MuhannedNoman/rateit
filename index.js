@@ -1,5 +1,7 @@
 require('express-async-errors');
 const express = require('express');
+const winston = require('winston');
+require('winston-mongodb');
 const mongoose = require('mongoose');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
@@ -12,6 +14,17 @@ const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 
 const env = require('./env');
+
+winston.add(winston.transports.File, { filename: logfile.log });
+winston.add(winston.transports.MongoDB, {
+  db: env.DB_CONNECTION_STRING,
+  level: 'info',
+});
+
+if (!env.JWT_SECRET_KEY) {
+  console.error('FATAL ERROR: JWT secret key is not defined');
+  process.exit(1);
+}
 
 mongoose
   .connect(env.DB_CONNECTION_STRING, {
