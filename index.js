@@ -15,11 +15,18 @@ Joi.objectId = require('joi-objectid')(Joi);
 
 const env = require('./env');
 
-winston.add(winston.transports.File, { filename: logfile.log });
-winston.add(winston.transports.MongoDB, {
-  db: env.DB_CONNECTION_STRING,
-  level: 'info',
+process.on('uncaughtException', (ex) => {
+  console.error('We got an uncaught exception');
+  winston.error(ex.message, ex);
 });
+
+winston.add(new winston.transports.File({ filename: `logfile.log` }));
+winston.add(
+  new winston.transports.MongoDB({
+    db: env.DB_CONNECTION_STRING,
+    level: 'info',
+  })
+);
 
 if (!env.JWT_SECRET_KEY) {
   console.error('FATAL ERROR: JWT secret key is not defined');
