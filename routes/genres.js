@@ -5,9 +5,13 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
 // Handle displaying all genres
-router.get('/', async (req, res) => {
-  const geners = await Genre.find().sort({ name: 1 }).select({ name: 1 });
-  res.send(geners);
+router.get('/', async (req, res, next) => {
+  try {
+    const geners = await Genre.find().sort({ name: 1 }).select({ name: 1 });
+    res.send(geners);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Handle a route to display a genre by ID
