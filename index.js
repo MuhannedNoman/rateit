@@ -2,13 +2,12 @@ require('express-async-errors');
 const express = require('express');
 const winston = require('winston');
 require('winston-mongodb');
-const mongoose = require('mongoose');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
+const env = require('./env');
 
 const app = express();
 require('./startup/routes')(app);
-
 require('./startup/database')();
 
 process.on('unhandledRejection', (ex) => {
