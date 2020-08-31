@@ -20,6 +20,10 @@
     "winston-mongodb": "^5.0.3"
   },
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "test": "jest --watchAll"
+  },
+  "devDependencies": {
+    "jest": "^26.4.2"
   }
 }
