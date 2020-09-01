@@ -9,6 +9,8 @@ require('./startup/database')();
 require('./startup/api')();
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   winston.info(`Server is listening in port ${PORT}`);
 });
+
+module.exports = server;
