@@ -1,6 +1,6 @@
 const env = require('../env');
 const winston = require('winston');
-require('winston-mongodb');
+// require('winston-mongodb');
 require('express-async-errors');
 
 module.exports = function () {
@@ -20,10 +20,10 @@ module.exports = function () {
     })
   );
 
-  winston.add(
-    new winston.transports.MongoDB({
-      db: env.DB_CONNECTION_STRING,
-      level: 'info',
-    })
-  );
+  // winston.add(
+  //   new winston.transports.MongoDB({
+  //     db: env.DB_CONNECTION_STRING,
+  //     level: 'info',
+  //   })
+  // );
 };
