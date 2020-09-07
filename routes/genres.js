@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const validateObjectId = require('../middleware/validateObjectId');
 
 // Handle displaying all genres
 router.get('/', async (req, res, next) => {
@@ -11,7 +12,7 @@ router.get('/', async (req, res, next) => {
 });
 
 // Handle a route to display a genre by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', validateObjectId, async (req, res) => {
   const genre = await Genre.findById(req.params.id);
 
   // 404 resource not found
