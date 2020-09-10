@@ -1,5 +1,6 @@
 # Ignoring module
 node_modules/
+coverage/
 
 env.js
 
