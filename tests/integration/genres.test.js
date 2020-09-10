@@ -107,4 +107,47 @@ describe('/api/genres', () => {
       expect(res.body).toHaveProperty('name', 'genre1');
     });
   });
+
+  describe('DELET /:id', () => {
+    let token;
+
+    beforeEach(() => {
+      token = new User({ isAdmin: true }).generateAuthToken();
+    });
+
+    const execute = async () => {
+      const genre = new Genre({ name: 'genre1' });
+      return genre.save();
+    };
+
+    it('should throw an 403 if the user is not and admin', async () => {
+      token = new User({ isAdmin: false }).generateAuthToken();
+
+      const genre = await execute();
+
+      const res = await request(server)
+        .delete(`/api/genres/${genre._id}`)
+        .set('x-auth-token', token);
+
+      expect(res.status).toBe(403);
+    });
+
+    it('should remove a genre if a valid id of an existing genre is given', async () => {
+      const genre = await execute();
+
+      const res = await request(server)
+        .delete(`/api/genres/${genre._id}`)
+        .set('x-auth-token', token);
+
+      expect(res.status).toBe(200);
+    });
+
+    it('should return a 404 if an unvalid id of a none existing genre is given', async () => {
+      const res = await request(server)
+        .delete(`/api/genres/${mongoose.Types.ObjectId()}`)
+        .set('x-auth-token', token);
+
+      expect(res.status).toBe(404);
+    });
+  });
 });
