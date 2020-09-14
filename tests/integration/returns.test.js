@@ -1,14 +1,19 @@
 let server;
+const request = require('supertest');
 const { Rental } = require('../../models/rental');
+const { User } = require('../../models/user');
 const mongoose = require('mongoose');
 
 describe('/api/returns', () => {
   let customerId;
   let movieId;
   let rental;
+  let token;
 
   beforeEach(async () => {
     server = require('../../index');
+
+    token = new User().generateAuthToken();
 
     customerId = mongoose.Types.ObjectId();
     movieId = mongoose.Types.ObjectId();
@@ -29,13 +34,22 @@ describe('/api/returns', () => {
   });
 
   afterEach(async () => {
-    server.close();
+    await server.close();
     await Rental.deleteMany({});
   });
 
-  it('should work', async () => {
-    const res = await Rental.findById(rental._id);
+  const execute = async () => {
+    return request(server)
+      .post('/api/returns')
+      .set('x-auth-token', token)
+      .send({ customerId, movieId });
+  };
 
-    expect(res).not.toBeNull();
+  it('should return 401 if client is not logged in', async () => {
+    token = '';
+
+    const res = await execute();
+
+    expect(res.status).toBe(401);
   });
 });
