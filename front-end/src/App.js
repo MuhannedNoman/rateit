@@ -1,10 +1,11 @@
 import React from 'react';
+import Movies from './components/Movies/Movies';
 
 const App = () => {
   return (
-    <div>
-      <h1>Hello world!!</h1>
-    </div>
+    <main className="container">
+      <Movies />
+    </main>
   );
 };
 
