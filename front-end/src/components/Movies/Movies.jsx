@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useState } from 'react';
 import { getGenres } from '../../services/fakeGenreService';
 import { getMovies } from '../../services/fakeMovieService';
@@ -16,6 +17,8 @@ const Movies = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [currentGenre, setCurrentGenre] = useState('');
+
+  const [sort, setSort] = useState({ path: 'title', order: 'asc' });
 
   const handleDelete = (movie) => {
     const { _id: id } = movie;
@@ -43,12 +46,18 @@ const Movies = () => {
     setCurrentPage(1);
   };
 
+  const handleSort = (sort) => {
+    setSort(sort);
+  };
+
   const filtred =
     currentGenre && currentGenre._id
       ? allMovies.filter((m) => m.genre._id === currentGenre._id)
       : allMovies;
 
-  const movies = paginate(filtred, currentPage, pageSize);
+  const sorted = _.orderBy(filtred, [sort.path], [sort.order]);
+
+  const movies = paginate(sorted, currentPage, pageSize);
 
   if (allMovies.length === 0) return <p>There are no movies in the database</p>;
 
@@ -67,6 +76,8 @@ const Movies = () => {
           onDelete={handleDelete}
           onLike={handleLike}
           movies={movies}
+          onSort={handleSort}
+          sort={sort}
         />
         <Pagination
           onPageChange={handlePageChange}

@@ -1,19 +1,20 @@
 import React from 'react';
+import TableHeader from '../TableHeader/TableHeader';
 import Like from './../Like';
 
-const MoviesTable = ({ movies, onLike, onDelete }) => {
+const MoviesTable = ({ movies, sort, onLike, onDelete, onSort }) => {
+  const columns = [
+    { path: 'title', label: 'Title' },
+    { path: 'genre.name', label: 'Genre' },
+    { path: 'numberInStock', label: 'Stock' },
+    { path: 'dailyRentalRate', label: 'Rate' },
+    { key: 'like' },
+    { key: 'delete' },
+  ];
+
   return (
     <table className="table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Genre</th>
-          <th>Stock</th>
-          <th>Rate</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
+      <TableHeader columns={columns} sort={sort} onSort={onSort} />
       <tbody>
         {movies.map((movie) => (
           <tr key={movie._id}>
