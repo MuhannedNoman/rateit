@@ -10,9 +10,9 @@ import MoviesTable from './MoviesTable';
 const Movies = () => {
   const [allMovies, setAllMovies] = useState(getMovies());
 
-  const [genres, setGenres] = useState([{ name: 'All Genre' }, ...getGenres()]);
+  const [genres] = useState([{ name: 'All Genre' }, ...getGenres()]);
 
-  const [pageSize, setPageSize] = useState(4);
+  const [pageSize] = useState(4);
 
   const [currentPage, setCurrentPage] = useState(1);
 
