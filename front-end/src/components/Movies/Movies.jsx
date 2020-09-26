@@ -22,8 +22,7 @@ const Movies = () => {
 
   const handleDelete = (movie) => {
     const { _id: id } = movie;
-    const newMovies = allMovies.filter((movie) => movie._id !== id);
-    setAllMovies(newMovies);
+    setAllMovies((prevState) => prevState.filter((movie) => movie._id !== id));
   };
 
   const handleLike = (movie) => {
