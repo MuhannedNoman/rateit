@@ -22,19 +22,19 @@ const Movies = () => {
 
   const handleDelete = (movie) => {
     const { _id: id } = movie;
-    setAllMovies(movies.filter((movie) => movie._id !== id));
+    const newMovies = allMovies.filter((movie) => movie._id !== id);
+    setAllMovies(newMovies);
   };
 
   const handleLike = (movie) => {
     const { _id: id } = movie;
-    setAllMovies(
-      movies.map((movie) => {
-        if (movie._id === id) {
-          movie.liked = !movie.liked;
-        }
-        return movie;
-      })
-    );
+    const newMovies = allMovies.map((movie) => {
+      if (movie._id === id) {
+        movie.liked = !movie.liked;
+      }
+      return movie;
+    });
+    setAllMovies(newMovies);
   };
 
   const handlePageChange = (page) => {
