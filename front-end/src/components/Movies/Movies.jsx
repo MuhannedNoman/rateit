@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 import { getMovies } from '../../services/fakeMovieService';
+import { paginate } from '../../utils/Paginate';
+import Pagination from '../Pagination';
 import Like from './../Like';
 
 const Movies = () => {
-  const [movies, setMovies] = useState(getMovies());
+  const [allMovies, setAllMovies] = useState(getMovies());
+
+  const [pageSize, setPageSize] = useState(4);
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const movies = paginate(allMovies, currentPage, pageSize);
 
   const handleDelete = (movie) => {
     const { _id: id } = movie;
-    setMovies(movies.filter((movie) => movie._id !== id));
+    setAllMovies(movies.filter((movie) => movie._id !== id));
   };
 
   const handleLike = (movie) => {
     const { _id: id } = movie;
-    setMovies(
+    setAllMovies(
       movies.map((movie) => {
         if (movie._id === id) {
           movie.liked = !movie.liked;
@@ -22,13 +30,17 @@ const Movies = () => {
     );
   };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div>
-      {movies.length === 0 ? (
+      {allMovies.length === 0 ? (
         <p>There are no movies in the database</p>
       ) : (
         <>
-          <p>{`Showing ${movies.length} in the database.`}</p>
+          <p>{`Showing ${allMovies.length} movies in the database.`}</p>
           <table className="table">
             <thead>
               <tr>
@@ -65,6 +77,12 @@ const Movies = () => {
               ))}
             </tbody>
           </table>
+          <Pagination
+            onPageChange={handlePageChange}
+            items={allMovies.length}
+            pageSize={pageSize}
+            currentPage={currentPage}
+          />
         </>
       )}
     </div>
