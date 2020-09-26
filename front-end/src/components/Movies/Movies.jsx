@@ -49,14 +49,23 @@ const Movies = () => {
     setSort(sort);
   };
 
-  const filtred =
-    currentGenre && currentGenre._id
-      ? allMovies.filter((m) => m.genre._id === currentGenre._id)
-      : allMovies;
+  const getPagedData = () => {
+    const filtred =
+      currentGenre && currentGenre._id
+        ? allMovies.filter((m) => m.genre._id === currentGenre._id)
+        : allMovies;
 
-  const sorted = _.orderBy(filtred, [sort.path], [sort.order]);
+    const sorted = _.orderBy(filtred, [sort.path], [sort.order]);
 
-  const movies = paginate(sorted, currentPage, pageSize);
+    const movies = paginate(sorted, currentPage, pageSize);
+
+    return {
+      totalCount: filtred.length,
+      data: movies,
+    };
+  };
+
+  const { totalCount, data } = getPagedData();
 
   if (allMovies.length === 0) return <p>There are no movies in the database</p>;
 
@@ -70,17 +79,17 @@ const Movies = () => {
         />
       </div>
       <div className="col">
-        <p>{`Showing ${filtred.length} movies in the database.`}</p>
+        <p>{`Showing ${totalCount} movies in the database.`}</p>
         <MoviesTable
           onDelete={handleDelete}
           onLike={handleLike}
-          movies={movies}
+          movies={data}
           onSort={handleSort}
           sort={sort}
         />
         <Pagination
           onPageChange={handlePageChange}
-          items={filtred.length}
+          items={totalCount}
           pageSize={pageSize}
           currentPage={currentPage}
         />
