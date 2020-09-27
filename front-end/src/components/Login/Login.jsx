@@ -27,7 +27,18 @@ const Login = () => {
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
+  const validateProperty = ({ name, value }) => {
+    if (name === 'userName') {
+      if (value.trim() === '') return 'User name is required';
+    } else {
+      if (value.trim() === '') return 'Password is required';
+    }
+    return '';
+  };
+
   const handleChange = ({ target }) => {
+    const error = validateProperty(target);
+
     const { name, value } = target;
 
     setLoginData((prevState) => ({
@@ -35,6 +46,10 @@ const Login = () => {
       account: {
         ...prevState.account,
         [name]: value,
+      },
+      errors: {
+        ...prevState.errors,
+        [name]: error,
       },
     }));
   };
