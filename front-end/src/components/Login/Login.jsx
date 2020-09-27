@@ -7,11 +7,31 @@ const Login = () => {
       userName: '',
       password: '',
     },
+    errors: {
+      userName: '',
+      password: '',
+    },
   });
+
+  const validate = () => {
+    const errors = {};
+
+    if (loginData.account.userName.trim() === '')
+      errors.userName = 'User name is required.';
+    else errors.userName = '';
+
+    if (loginData.account.password.trim() === '')
+      errors.password = 'Password is required.';
+    else errors.password = '';
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
+
     setLoginData((prevState) => ({
+      ...prevState,
       account: {
         ...prevState.account,
         [name]: value,
@@ -21,8 +41,18 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.currentTarget);
+    const errors = validate();
+    setLoginData((prevState) => ({
+      ...prevState,
+      errors: {
+        ...prevState.errors,
+        ...errors,
+      },
+    }));
+    if (errors) return;
   };
+
+  const { account, errors } = loginData;
 
   return (
     <div>
@@ -30,17 +60,19 @@ const Login = () => {
       <form id="login" onSubmit={handleSubmit}>
         <Input
           name="userName"
-          value={loginData.account.userName}
+          value={account.userName}
           label="User Name"
           onChange={handleChange}
           type="text"
+          error={errors.userName}
         />
         <Input
           name="password"
-          value={loginData.account.password}
+          value={account.password}
           label="Password"
           onChange={handleChange}
           type="password"
+          error={errors.password}
         />
         <button type="submit" className="btn btn-primary">
           Login
