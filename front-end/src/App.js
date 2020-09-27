@@ -6,6 +6,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import Customers from './components/Customers/Customers';
+import MovieForm from './components/MovieForm/MovieForm';
 import Movies from './components/Movies/Movies';
 import Navbar from './components/Navbar/Navbar';
 import NotFound from './components/NotFound/NotFound';
@@ -17,6 +18,7 @@ const App = () => {
       <Navbar />
       <main className="container">
         <Switch>
+          <Route path="/movies/:id" component={MovieForm} />
           <Route path="/movies" component={Movies} />
           <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} />
