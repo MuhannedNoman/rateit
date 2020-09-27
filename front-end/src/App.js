@@ -7,12 +7,14 @@ import {
 } from 'react-router-dom';
 import Customers from './components/Customers/Customers';
 import Movies from './components/Movies/Movies';
+import Navbar from './components/Navbar/Navbar';
 import NotFound from './components/NotFound/NotFound';
 import Rentals from './components/Rentals/Rentals';
 
 const App = () => {
   return (
     <Router>
+      <Navbar />
       <main className="container">
         <Switch>
           <Route path="/movies" component={Movies} />
