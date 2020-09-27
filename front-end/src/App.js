@@ -3,9 +3,11 @@ import Movies from './components/Movies/Movies';
 
 const App = () => {
   return (
-    <main className="container">
-      <Movies />
-    </main>
+    <BrowserRouter>
+      <main className="container">
+        <Movies />
+      </main>
+    </BrowserRouter>
   );
 };
 
