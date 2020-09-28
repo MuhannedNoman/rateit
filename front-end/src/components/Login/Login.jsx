@@ -1,7 +1,7 @@
 import Joi from 'joi-browser';
 import React, { useState } from 'react';
+import { validateProperty, validateSubmit } from '../Form/FormHelper';
 import Input from '../Input';
-
 const Login = () => {
   const [loginData, setLoginData] = useState({
     account: {
@@ -14,33 +14,17 @@ const Login = () => {
     },
   });
 
+  const { account, errors } = loginData;
+
   const Schema = {
     userName: Joi.string().required().label('User Name'),
     password: Joi.string().required().label('Password'),
   };
 
-  const validate = () => {
-    const options = { abortEarly: false };
-    const { error } = Joi.validate(loginData.account, Schema, options);
-
-    if (!error) return null;
-
-    const errors = {};
-    for (let item of error.details) errors[item.path[0]] = item.message;
-    return errors;
-  };
-
-  const validateProperty = ({ name, value }) => {
-    const obj = { [name]: value };
-    const schema = { [name]: Schema[name] };
-    const { error } = Joi.validate(obj, schema);
-    return error ? error.details[0].message : null;
-  };
-
   const handleChange = ({ target }) => {
-    const error = validateProperty(target);
-
     const { name, value } = target;
+
+    const error = validateProperty(name, value, Schema);
 
     setLoginData((prevState) => ({
       ...prevState,
@@ -57,7 +41,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const errors = validate();
+    const errors = validateSubmit(account, Schema);
     setLoginData((prevState) => ({
       ...prevState,
       errors: {
@@ -67,8 +51,6 @@ const Login = () => {
     }));
     if (errors) return;
   };
-
-  const { account, errors } = loginData;
 
   return (
     <div>
@@ -90,7 +72,11 @@ const Login = () => {
           type="password"
           error={errors.password}
         />
-        <button disabled={validate()} type="submit" className="btn btn-primary">
+        <button
+          disabled={validateSubmit(account, Schema)}
+          type="submit"
+          className="btn btn-primary"
+        >
           Login
         </button>
       </form>
