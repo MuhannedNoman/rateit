@@ -5,13 +5,14 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import Customers from './components/Customers/Customers';
+import Customers from './components/Customers';
 import Login from './components/Login';
-import MovieForm from './components/MovieForm/MovieForm';
-import Movies from './components/Movies/Movies';
-import Navbar from './components/Navbar/Navbar';
-import NotFound from './components/NotFound/NotFound';
-import Rentals from './components/Rentals/Rentals';
+import MovieForm from './components/MovieForm';
+import Movies from './components/Movies';
+import Navbar from './components/Navbar';
+import NotFound from './components/NotFound';
+import Register from './components/Register';
+import Rentals from './components/Rentals';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
       <Navbar />
       <main className="container">
         <Switch>
+          <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <Route path="/movies/:id" component={MovieForm} />
           <Route path="/movies" component={Movies} />

@@ -3,23 +3,22 @@ import React, { useState } from 'react';
 import { validateProperty, validateSubmit } from '../Form/FormHelper';
 import Input from '../Input';
 
-const Login = () => {
-  const [loginData, setLoginData] = useState({
-    account: {
-      userName: '',
-      password: '',
-    },
+const Register = () => {
+  const [userState, setUserState] = useState({
+    user: { email: '', password: '', name: '' },
     errors: {
-      userName: '',
+      email: '',
       password: '',
+      name: '',
     },
   });
 
-  const { account, errors } = loginData;
+  const { user, errors } = userState;
 
   const Schema = {
-    userName: Joi.string().required().label('User Name'),
-    password: Joi.string().required().label('Password'),
+    email: Joi.string().email().required().label('Email Address'),
+    password: Joi.string().required().min(5).label('Password'),
+    name: Joi.string().alphanum().required().label('User Name'),
   };
 
   const handleChange = ({ target }) => {
@@ -27,10 +26,10 @@ const Login = () => {
 
     const error = validateProperty(name, value, Schema);
 
-    setLoginData((prevState) => ({
+    setUserState((prevState) => ({
       ...prevState,
-      account: {
-        ...prevState.account,
+      user: {
+        ...prevState.user,
         [name]: value,
       },
       errors: {
@@ -42,8 +41,8 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const errors = validateSubmit(account, Schema);
-    setLoginData((prevState) => ({
+    const errors = validateSubmit(user, Schema);
+    setUserState((prevState) => ({
       ...prevState,
       errors: {
         ...prevState.errors,
@@ -55,34 +54,42 @@ const Login = () => {
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Register</h1>
       <form id="login" onSubmit={handleSubmit}>
         <Input
-          name="userName"
-          value={account.userName}
-          label="User Name"
+          name="email"
+          value={user.email}
+          label="Email Address"
           onChange={handleChange}
-          type="text"
-          error={errors.userName}
+          type="email"
+          error={errors.email}
         />
         <Input
           name="password"
-          value={account.password}
+          value={user.password}
           label="Password"
           onChange={handleChange}
           type="password"
           error={errors.password}
         />
+        <Input
+          name="name"
+          value={user.name}
+          label="User Name"
+          onChange={handleChange}
+          type="text"
+          error={errors.name}
+        />
         <button
-          disabled={validateSubmit(account, Schema)}
+          disabled={validateSubmit(user, Schema)}
           type="submit"
           className="btn btn-primary"
         >
-          Login
+          Register
         </button>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Register;
