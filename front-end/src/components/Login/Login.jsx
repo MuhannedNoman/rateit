@@ -1,3 +1,4 @@
+import Joi from 'joi-browser';
 import React, { useState } from 'react';
 import Input from '../Input';
 
@@ -13,27 +14,27 @@ const Login = () => {
     },
   });
 
+  const Schema = {
+    userName: Joi.string().required().label('User Name'),
+    password: Joi.string().required().label('Password'),
+  };
+
   const validate = () => {
+    const options = { abortEarly: false };
+    const { error } = Joi.validate(loginData.account, Schema, options);
+
+    if (!error) return null;
+
     const errors = {};
-
-    if (loginData.account.userName.trim() === '')
-      errors.userName = 'User name is required.';
-    else errors.userName = '';
-
-    if (loginData.account.password.trim() === '')
-      errors.password = 'Password is required.';
-    else errors.password = '';
-
-    return Object.keys(errors).length === 0 ? null : errors;
+    for (let item of error.details) errors[item.path[0]] = item.message;
+    return errors;
   };
 
   const validateProperty = ({ name, value }) => {
-    if (name === 'userName') {
-      if (value.trim() === '') return 'User name is required';
-    } else {
-      if (value.trim() === '') return 'Password is required';
-    }
-    return '';
+    const obj = { [name]: value };
+    const schema = { [name]: Schema[name] };
+    const { error } = Joi.validate(obj, schema);
+    return error ? error.details[0].message : null;
   };
 
   const handleChange = ({ target }) => {
