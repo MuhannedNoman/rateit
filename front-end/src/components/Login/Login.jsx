@@ -90,7 +90,7 @@ const Login = () => {
           type="password"
           error={errors.password}
         />
-        <button type="submit" className="btn btn-primary">
+        <button disabled={validate()} type="submit" className="btn btn-primary">
           Login
         </button>
       </form>
