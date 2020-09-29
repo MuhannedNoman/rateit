@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getGenres } from '../../services/fakeGenreService';
 import { getMovies } from '../../services/fakeMovieService';
 import { paginate } from '../../utils/Paginate';
@@ -79,6 +80,9 @@ const Movies = () => {
         />
       </div>
       <div className="col">
+        <Link to="/movies/new">
+          <button className="btn btn-primary mb-2">New Movie</button>
+        </Link>
         <p>{`Showing ${totalCount} movies in the database.`}</p>
         <MoviesTable
           onDelete={handleDelete}
