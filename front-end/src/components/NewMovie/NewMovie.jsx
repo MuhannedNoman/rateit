@@ -1,6 +1,7 @@
 import Joi from 'joi-browser';
 import React, { useState } from 'react';
 import { getGenres } from '../../services/fakeGenreService';
+import { saveMovie } from '../../services/fakeMovieService';
 import { validateProperty, validateSubmit } from '../Form/FormHelper';
 import Input from '../Input';
 import Select from './../Select/Select';
@@ -9,13 +10,13 @@ const NewMovie = ({ history }) => {
   const [movieData, setMovieData] = useState({
     movie: {
       title: '',
-      genre: '',
+      genreId: '',
       dailyRentalRate: '',
       numberInStock: '',
     },
     errors: {
       title: '',
-      genre: '',
+      genreId: '',
       dailyRentalRate: '',
       numberInStock: '',
     },
@@ -25,7 +26,7 @@ const NewMovie = ({ history }) => {
 
   const Schema = {
     title: Joi.string().required().label('Title'),
-    genre: Joi.string().required().label('Genre'),
+    genreId: Joi.string().required().label('Genre'),
     dailyRentalRate: Joi.number().max(10).min(0).required().label('Rate'),
     numberInStock: Joi.number()
       .max(100)
@@ -63,7 +64,11 @@ const NewMovie = ({ history }) => {
       },
     }));
     if (errors) return;
-    history.push('/movies');
+    const newMovie = saveMovie(movieData.movie);
+    if (newMovie) {
+      history.push('/movies');
+      console.log(newMovie);
+    } else console.log('Error saving movie');
   };
 
   return (
@@ -80,10 +85,10 @@ const NewMovie = ({ history }) => {
           error={errors.title}
         />
         <Select
-          name="genre"
+          name="genreId"
           label="Genre"
-          value={movie.genre}
-          error={errors.genre}
+          value={movie.genreId}
+          error={errors.genreId}
           onChange={handleChange}
           options={getGenres()}
         />
