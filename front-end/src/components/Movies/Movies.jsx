@@ -21,6 +21,8 @@ const Movies = () => {
 
   const [sort, setSort] = useState({ path: 'title', order: 'asc' });
 
+  const [search, setSearch] = useState('');
+
   const handleDelete = (movie) => {
     const { _id: id } = movie;
     setAllMovies((prevState) => prevState.filter((movie) => movie._id !== id));
@@ -42,26 +44,36 @@ const Movies = () => {
   };
 
   const handleGenreSelect = (genre) => {
+    setSearch('');
     setCurrentGenre(genre);
     setCurrentPage(1);
   };
 
   const handleSort = (sort) => {
-    setSort(sort);
+    if (currentGenre) setSort(sort);
+  };
+
+  const handleSearch = ({ target }) => {
+    setCurrentGenre('');
+    setSearch(target.value);
   };
 
   const getPagedData = () => {
-    const filtred =
-      currentGenre && currentGenre._id
-        ? allMovies.filter((m) => m.genre._id === currentGenre._id)
-        : allMovies;
+    let filterd = allMovies;
 
-    const sorted = _.orderBy(filtred, [sort.path], [sort.order]);
+    if (search !== '')
+      filterd = allMovies.filter((m) =>
+        m.title.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+      );
+    else if (currentGenre && currentGenre._id)
+      filterd = allMovies.filter((m) => m.genre._id === currentGenre._id);
+
+    const sorted = _.orderBy(filterd, [sort.path], [sort.order]);
 
     const movies = paginate(sorted, currentPage, pageSize);
 
     return {
-      totalCount: filtred.length,
+      totalCount: filterd.length,
       data: movies,
     };
   };
@@ -84,6 +96,15 @@ const Movies = () => {
           <button className="btn btn-primary mb-2">New Movie</button>
         </Link>
         <p>{`Showing ${totalCount} movies in the database.`}</p>
+        <input
+          name="searchMovies"
+          type="search"
+          onChange={handleSearch}
+          value={search}
+          className="form-control mb-4"
+          id="searchMovies"
+          placeholder="Search..."
+        />
         <MoviesTable
           onDelete={handleDelete}
           onLike={handleLike}
