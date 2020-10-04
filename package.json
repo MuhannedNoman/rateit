@@ -19,6 +19,7 @@
     "moment": "^2.28.0",
     "mongoose": "^5.9.25",
     "nodemon": "^2.0.4",
+    "react-toastify": "^6.0.8",
     "winston": "^3.3.3",
     "winston-mongodb": "^5.0.3"
   },
