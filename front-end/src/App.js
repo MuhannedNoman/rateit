@@ -13,10 +13,13 @@ import Navbar from './components/Navbar';
 import NotFound from './components/NotFound';
 import Register from './components/Register';
 import Rentals from './components/Rentals';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
     <Router>
+      <ToastContainer />
       <Navbar />
       <main className="container">
         <Switch>
