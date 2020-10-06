@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getGenres } from '../../services/fakeGenreService';
+import { getGenres } from '../../services/genreService';
 import { getMovies } from '../../services/fakeMovieService';
 import { paginate } from '../../utils/Paginate';
 import ListGroup from '../ListGroup/ListGroup';
@@ -11,7 +11,16 @@ import MoviesTable from './MoviesTable';
 const Movies = () => {
   const [allMovies, setAllMovies] = useState(getMovies());
 
-  const [genres] = useState([{ name: 'All Genre' }, ...getGenres()]);
+  useEffect(() => {
+    const fetchGenre = async () => {
+      const { data } = await getGenres();
+      console.log(data);
+      setGenres([{ name: 'All Genre' }, ...data]);
+    };
+    fetchGenre();
+  }, []);
+
+  const [genres, setGenres] = useState([]);
 
   const [pageSize] = useState(4);
 
