@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-axios.interceptors.respnse.use(null, (error) => {
+axios.interceptors.response.use(null, (error) => {
   const expectedError =
     error.respnse && error.respnse.status >= 400 && error.respnse.status < 500;
 
