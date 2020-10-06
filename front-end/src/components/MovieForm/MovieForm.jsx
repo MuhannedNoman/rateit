@@ -1,12 +1,23 @@
 import Joi from 'joi-browser';
 import React, { useEffect, useState } from 'react';
-import { getGenres } from '../../services/fakeGenreService';
-import { getMovie, saveMovie } from '../../services/fakeMovieService';
+import { getGenres } from '../../services/genreService';
+import { getMovie, saveMovie } from '../../services/movieService';
 import { validateProperty, validateSubmit } from '../Form/FormHelper';
 import Input from '../Input';
 import Select from './../Select/Select';
 
 const MovieForm = ({ match, history }) => {
+
+  useEffect(() => {
+    const fetchGenre = async () => {
+      const { data } = await getGenres();
+      setGenres([...data]);
+    };
+    fetchGenre();
+  }, []);
+
+  const [genres, setGenres] = useState([]);
+
   const [movieData, setMovieData] = useState({
     movie: {
       _id: '',
@@ -24,25 +35,32 @@ const MovieForm = ({ match, history }) => {
     },
   });
 
+
+
   useEffect(() => {
     if (match.params.id === 'new') return;
 
-    const movie = getMovie(match.params.id);
-    if (movie) {
-      setMovieData((prevState) => ({
-        ...prevState,
-        movie: {
-          ...prevState.movie,
-          _id: movie._id,
-          title: movie.title,
-          genreId: movie.genre._id,
-          numberInStock: movie.numberInStock,
-          dailyRentalRate: movie.dailyRentalRate,
-        },
-      }));
-    } else {
-      return history.replace('/not-found');
-    }
+    const fetchMovie = async () => {
+      try {
+        const { data: movie } = await getMovie(match.params.id);
+        setMovieData((prevState) => ({
+          ...prevState,
+          movie: {
+            ...prevState.movie,
+            _id: movie._id,
+            title: movie.title,
+            genreId: movie.genre._id,
+            numberInStock: movie.numberInStock,
+            dailyRentalRate: movie.dailyRentalRate,
+          },
+        }));
+      } catch (error) {
+        if(error.response && error.response.status === 404)
+         history.replace('/not-found');
+      }
+    };  
+      
+    fetchMovie();
   }, []);
 
   const { movie, errors } = movieData;
@@ -112,7 +130,7 @@ const MovieForm = ({ match, history }) => {
           value={movie.genreId}
           error={errors.genreId}
           onChange={handleChange}
-          options={getGenres()}
+          options={genres}
         />
         <Input
           name="numberInStock"
