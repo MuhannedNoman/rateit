@@ -1,5 +1,6 @@
 import http from './httpServices';
+import { API_URL } from '../config.json';
 
 export function getGenres() {
-  return http.get('http://localhost:3001/api/genres');
+  return http.get(`${API_URL}/genres`);
 }
