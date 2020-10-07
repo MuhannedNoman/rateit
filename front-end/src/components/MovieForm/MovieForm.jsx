@@ -95,7 +95,7 @@ const MovieForm = ({ match, history }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateSubmit(movie, Schema);
     setMovieData((prevState) => ({
@@ -106,7 +106,7 @@ const MovieForm = ({ match, history }) => {
       },
     }));
     if (errors) return;
-    const newMovie = saveMovie(movieData.movie);
+    const newMovie = await saveMovie(movieData.movie);
     if (newMovie) {
       history.push('/movies');
     } else console.log('Error saving movie');
