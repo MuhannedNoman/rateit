@@ -54,7 +54,7 @@ router.post('/', auth, async (req, res) => {
     movie: {
       _id: movie._id,
       title: movie.title,
-      dailyRenalRate: movie.dailyRenalRate,
+      dailyRentalRate: movie.dailyRentalRate,
     },
   });
 
@@ -107,7 +107,7 @@ router.put('/:id', auth, async (req, res) => {
       movie: {
         _id: movie._id,
         title: movie.title,
-        dailyRenalRate: movie.dailyRenalRate,
+        dailyRentalRate: movie.dailyRentalRate,
       },
     },
     {

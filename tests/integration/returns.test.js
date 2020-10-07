@@ -23,7 +23,7 @@ describe('/api/returns', () => {
     movie = new Movie({
       _id: movieId,
       title: '12345',
-      dailyRenalRate: 2,
+      dailyRentalRate: 2,
       genre: { name: '12345' },
       numberInStock: 10,
     });
@@ -39,7 +39,7 @@ describe('/api/returns', () => {
       movie: {
         _id: movieId,
         title: '12345',
-        dailyRenalRate: 2,
+        dailyRentalRate: 2,
       },
     });
     await rental.save();

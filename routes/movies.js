@@ -38,7 +38,7 @@ router.post('/', auth, async (req, res) => {
       name: genre.name,
     },
     numberInStock: req.body.numberInStock,
-    dailyRenalRate: req.body.dailyRenalRate,
+    dailyRentalRate: req.body.dailyRentalRate,
   });
 
   await movie.save();
@@ -72,7 +72,7 @@ router.put('/:id', auth, async (req, res) => {
         name: genre.name,
       },
       numberInStock: req.body.numberInStock,
-      dailyRenalRate: req.body.dailyRenalRate,
+      dailyRentalRate: req.body.dailyRentalRate,
     },
     {
       new: true,
