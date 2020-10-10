@@ -2,6 +2,7 @@ import Joi from 'joi-browser';
 import React, { useState } from 'react';
 import { validateProperty, validateSubmit } from '../Form/FormHelper';
 import Input from '../Input';
+import { register } from '../../services/userService';
 
 const Register = () => {
   const [userState, setUserState] = useState({
@@ -18,7 +19,7 @@ const Register = () => {
   const Schema = {
     email: Joi.string().email().required().label('Email Address'),
     password: Joi.string().required().min(5).label('Password'),
-    name: Joi.string().alphanum().required().label('User Name'),
+    name: Joi.string().alphanum().min(5).required().label('User Name'),
   };
 
   const handleChange = ({ target }) => {
@@ -39,7 +40,7 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateSubmit(user, Schema);
     setUserState((prevState) => ({
@@ -50,6 +51,18 @@ const Register = () => {
       },
     }));
     if (errors) return;
+    try {
+      await register(user);;
+    } catch (ex) {
+      if(ex.response && ex.response.statue === 400)
+      setUserState((prevState) => ({
+        ...prevState,
+        errors: {
+          ...prevState.errors,
+          name:ex.response.data,
+        },
+      }))
+    }
   };
 
   return (
