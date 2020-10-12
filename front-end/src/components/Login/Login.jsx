@@ -2,8 +2,9 @@ import Joi from 'joi-browser';
 import React, { useState } from 'react';
 import { validateProperty, validateSubmit } from '../Form/FormHelper';
 import Input from '../Input';
+import { login } from '../../services/authService';
 
-const Login = () => {
+const Login = ({history}) => {
   const [loginData, setLoginData] = useState({
     account: {
       userName: '',
@@ -40,7 +41,7 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateSubmit(account, Schema);
     setLoginData((prevState) => ({
@@ -51,6 +52,20 @@ const Login = () => {
       },
     }));
     if (errors) return;
+    try {
+      const {  data: jwt  } = await login(account.userName, account.password);
+      localStorage.setItem('token',jwt)
+      history.push('/')
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400)
+        setLoginData((prevState) => ({
+          ...prevState,
+          errors: {
+            ...prevState.errors,
+            userName: ex.response.data,
+          },
+        }));
+    }
   };
 
   return (
