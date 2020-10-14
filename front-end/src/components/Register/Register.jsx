@@ -4,7 +4,7 @@ import { validateProperty, validateSubmit } from '../Form/FormHelper';
 import Input from '../Input';
 import { register } from '../../services/userService';
 
-const Register = () => {
+const Register = ({ history }) => {
   const [userState, setUserState] = useState({
     user: { email: '', password: '', name: '' },
     errors: {
@@ -52,16 +52,19 @@ const Register = () => {
     }));
     if (errors) return;
     try {
-      await register(user);;
+      const response = await register(user);
+
+      localStorage.setItem('token', response.headers['x-auth-token']);
+      history.push('/');
     } catch (ex) {
-      if(ex.response && ex.response.statue === 400)
-      setUserState((prevState) => ({
-        ...prevState,
-        errors: {
-          ...prevState.errors,
-          name:ex.response.data,
-        },
-      }))
+      if (ex.response && ex.response.statue === 400)
+        setUserState((prevState) => ({
+          ...prevState,
+          errors: {
+            ...prevState.errors,
+            name: ex.response.data,
+          },
+        }));
     }
   };
 
