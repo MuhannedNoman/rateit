@@ -6,6 +6,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+import { ToastContainer } from 'react-toastify';
 import Customers from './components/Customers';
 import Login from './components/Login';
 import MovieForm from './components/MovieForm';
@@ -14,7 +15,7 @@ import Navbar from './components/Navbar';
 import NotFound from './components/NotFound';
 import Register from './components/Register';
 import Rentals from './components/Rentals';
-import { ToastContainer } from 'react-toastify';
+import Logout from './components/Logout/Logout.';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
         <Switch>
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
+          <Route path="/logout" component={Logout} />
           <Route path="/movies/:id" component={MovieForm} />
           <Route path="/movies" component={Movies} />
           <Route path="/customers" component={Customers} />
