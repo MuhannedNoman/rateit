@@ -24,7 +24,6 @@ const App = () => {
       try {
         const jwt = localStorage.getItem('token');
         const user = jwtDecode(jwt);
-        console.log(user);
         setCurrentUser(user);
       } catch (ex) {}
     };
