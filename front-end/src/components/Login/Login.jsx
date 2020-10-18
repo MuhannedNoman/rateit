@@ -4,7 +4,7 @@ import { validateProperty, validateSubmit } from '../Form/FormHelper';
 import Input from '../Input';
 import { login } from '../../services/authService';
 
-const Login = ({history}) => {
+const Login = () => {
   const [loginData, setLoginData] = useState({
     account: {
       userName: '',
@@ -53,9 +53,9 @@ const Login = ({history}) => {
     }));
     if (errors) return;
     try {
-      const {  data: jwt  } = await login(account.userName, account.password);
-      localStorage.setItem('token',jwt)
-      history.push('/')
+      const { data: jwt } = await login(account.userName, account.password);
+      localStorage.setItem('token', jwt);
+      window.location = '/';
     } catch (ex) {
       if (ex.response && ex.response.status === 400)
         setLoginData((prevState) => ({

@@ -55,7 +55,7 @@ const Register = ({ history }) => {
       const response = await register(user);
 
       localStorage.setItem('token', response.headers['x-auth-token']);
-      history.push('/');
+      window.location = '/';
     } catch (ex) {
       if (ex.response && ex.response.statue === 400)
         setUserState((prevState) => ({
