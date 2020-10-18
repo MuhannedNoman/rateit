@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
 } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 import Customers from './components/Customers';
 import Login from './components/Login';
 import MovieForm from './components/MovieForm';
@@ -17,10 +18,25 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
+
+  useEffect(() => {
+    const getCurrentUser = () => {
+      try {
+        const jwt = localStorage.getItem('token');
+        const user = jwtDecode(jwt);
+        console.log(user);
+        setCurrentUser(user);
+      } catch (ex) {}
+    };
+    getCurrentUser();
+  }, []);
+
+  const [currentUser, setCurrentUser] = useState();
+
   return (
     <Router>
       <ToastContainer />
-      <Navbar />
+      <Navbar user={currentUser} />
       <main className="container">
         <Switch>
           <Route path="/register" component={Register} />
