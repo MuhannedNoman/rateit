@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { validateProperty, validateSubmit } from '../Form/FormHelper';
 import Input from '../Input';
 import { register } from '../../services/userService';
+import { loginWithJwt } from '../../services/authService';
 
-const Register = ({ history }) => {
+const Register = () => {
   const [userState, setUserState] = useState({
     user: { email: '', password: '', name: '' },
     errors: {
@@ -53,8 +54,7 @@ const Register = ({ history }) => {
     if (errors) return;
     try {
       const response = await register(user);
-
-      localStorage.setItem('token', response.headers['x-auth-token']);
+      loginWithJwt(response.headers['x-auth-token']);;
       window.location = '/';
     } catch (ex) {
       if (ex.response && ex.response.statue === 400)
