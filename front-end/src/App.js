@@ -5,7 +5,6 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
 import { ToastContainer } from 'react-toastify';
 import Customers from './components/Customers';
 import Login from './components/Login';
@@ -16,19 +15,13 @@ import NotFound from './components/NotFound';
 import Register from './components/Register';
 import Rentals from './components/Rentals';
 import Logout from './components/Logout/Logout.';
+import { getCurrentUser } from './services/authService';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 
   useEffect(() => {
-    const getCurrentUser = () => {
-      try {
-        const jwt = localStorage.getItem('token');
-        const user = jwtDecode(jwt);
-        setCurrentUser(user);
-      } catch (ex) {}
-    };
-    getCurrentUser();
+    setCurrentUser(getCurrentUser());
   }, []);
 
   const [currentUser, setCurrentUser] = useState();

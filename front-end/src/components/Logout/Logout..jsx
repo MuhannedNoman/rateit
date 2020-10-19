@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
+import { logout } from '../../services/authService';
 
 const Logout = () => {
   useEffect(() => {
-    const logout = () => {
-      localStorage.removeItem('token');
-      window.location = '/';
-    };
     logout();
+    window.location = '/';
   }, []);
   return null;
 };

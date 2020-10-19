@@ -53,8 +53,7 @@ const Login = () => {
     }));
     if (errors) return;
     try {
-      const { data: jwt } = await login(account.userName, account.password);
-      localStorage.setItem('token', jwt);
+      await login(account.userName, account.password);
       window.location = '/';
     } catch (ex) {
       if (ex.response && ex.response.status === 400)
