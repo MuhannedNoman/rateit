@@ -9,7 +9,7 @@ import Pagination from '../Pagination';
 import MoviesTable from './MoviesTable';
 import {toast} from 'react-toastify'
 
-const Movies = () => {
+const Movies = ({ user }) => {
   useEffect(() => {
     const fetchGenre = async () => {
       const { data } = await getGenres();
@@ -42,13 +42,15 @@ const Movies = () => {
     const originalMovies = allMovies;
     const { _id: id } = movie;
     try {
-      await deleteMovie(id)
-      setAllMovies((prevState) => prevState.filter((movie) => movie._id !== id));
+      await deleteMovie(id);
+      setAllMovies((prevState) =>
+        prevState.filter((movie) => movie._id !== id)
+      );
     } catch (error) {
-      if(error.response && error.response.status === 404)
-        toast.error('This movie has already been deleted')
+      if (error.response && error.response.status === 404)
+        toast.error('This movie has already been deleted');
 
-      setAllMovies(originalMovies )
+      setAllMovies(originalMovies);
     }
   };
 
@@ -116,9 +118,11 @@ const Movies = () => {
         />
       </div>
       <div className="col">
-        <Link to="/movies/new">
-          <button className="btn btn-primary mb-2">New Movie</button>
-        </Link>
+        {user && (
+          <Link to="/movies/new">
+            <button className="btn btn-primary mb-2">New Movie</button>
+          </Link>
+        )}
         <p>{`Showing ${totalCount} movies in the database.`}</p>
         <input
           name="searchMovies"
