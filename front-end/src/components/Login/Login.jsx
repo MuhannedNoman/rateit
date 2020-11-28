@@ -1,10 +1,11 @@
 import Joi from 'joi-browser';
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { validateProperty, validateSubmit } from '../Form/FormHelper';
 import Input from '../Input';
-import { login } from '../../services/authService';
+import { login, getCurrentUser } from '../../services/authService';
 
-const Login = () => {
+const Login = ({ location }) => {
   const [loginData, setLoginData] = useState({
     account: {
       userName: '',
@@ -54,7 +55,8 @@ const Login = () => {
     if (errors) return;
     try {
       await login(account.userName, account.password);
-      window.location = '/';
+      const {  state  } = location;;
+      window.location = state ? state.from.pathname : '/';
     } catch (ex) {
       if (ex.response && ex.response.status === 400)
         setLoginData((prevState) => ({
@@ -66,6 +68,8 @@ const Login = () => {
         }));
     }
   };
+
+  if (getCurrentUser()) return <Redirect to="/"/>
 
   return (
     <div>

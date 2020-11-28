@@ -15,6 +15,7 @@ import NotFound from './components/NotFound';
 import Register from './components/Register';
 import Rentals from './components/Rentals';
 import Logout from './components/Logout/Logout.';
+import ProtectedRoute from './components/ProtectedRoute';
 import { getCurrentUser } from './services/authService';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -35,7 +36,7 @@ const App = () => {
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <Route path="/logout" component={Logout} />
-          <Route path="/movies/:id" component={MovieForm} />
+          <ProtectedRoute path="/movies/:id" component={MovieForm} />
           <Route
             path="/movies"
             render={(props) => <Movies {...props} user={currentUser} />}
